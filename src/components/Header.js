@@ -1,16 +1,13 @@
 import React from 'react'
 import { NavLink, useHistory } from 'react-router-dom'
-import { getUserInfo, logout, removeUserInfo } from '../config/firebase';
+import { logout, removeUserInfo } from '../config/firebase';
 
 export default function Header({ user, isAuth }) {
 
     const history = useHistory();
-
-    console.log(getUserInfo());
     
     function handleLogout() {
         logout().then(() => {
-            removeUserInfo();
             history.push('/');
         }).catch((error) => {
             console.log(error);
@@ -41,7 +38,7 @@ export default function Header({ user, isAuth }) {
                                 <NavLink className="nav-link" to="/account">Hello, {user.email}</NavLink>
                             </li>
                             <li className="nav-item">
-                                <a className="nav-link text-danger" onClick={handleLogout}>Logout</a>
+                                <NavLink className="nav-link text-danger" to="#" onClick={handleLogout}>Logout</NavLink>
                             </li>
                         </ul>
                         :

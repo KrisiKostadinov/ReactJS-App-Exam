@@ -9,14 +9,14 @@ import { Register } from './components/Register';
 import AddCard from './components/AddCard';
 import CardsList from './components/CardsList';
 import { Details } from './components/Details';
-import { isAuthenticated } from './config/firebase';
+import { auth } from './config/firebase';
 
 function App() {
 
   const [user, setUser] = useState(null);
 
   useEffect(() => {
-    setUser(isAuthenticated());
+    auth.onAuthStateChanged(setUser);
   }, []);
 
   return (

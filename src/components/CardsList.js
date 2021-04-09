@@ -10,14 +10,9 @@ export default class CardsList extends Component {
     }
 
     componentDidMount() {
-        console.log(this.state.cards);
         fetch('http://localhost:3030/cards')
             .then(res => res.json())
             .then(cards => this.setState({ cards }));
-    }
-
-    componentDidUpdate() {
-        console.log(this.state.cards);
     }
 
     render() {
