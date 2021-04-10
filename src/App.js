@@ -10,6 +10,7 @@ import AddCard from './components/AddCard';
 import CardsList from './components/CardsList';
 import { Details } from './components/Details';
 import { auth } from './config/firebase';
+import { EditCard } from './components/EditCard';
 
 function App() {
 
@@ -27,7 +28,8 @@ function App() {
         <Switch>
           <Route exact path="/" component={CardsList} />
           <Route exact path="/all" component={CardsList} />
-          <Route exact path="/add" component={AddCard} userId={user?.uid} />
+          <Route exact path="/add" component={AddCard} />
+          <Route exact path="/edit/:id" component={EditCard} />
           <Route exact path="/details/:id" component={Details} />
           <Route exact path="/login" component={Login} />
           <Route exact path="/register" component={Register} />

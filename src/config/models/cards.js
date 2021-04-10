@@ -14,6 +14,10 @@ export async function addCard(card) {
     return await cards.add(card);
 }
 
+export async function editCard(id, card) {
+    return await cards.doc(id).set(card);
+}
+
 export async function getCardById(id) {
     return await cards.doc(id).get();
 }

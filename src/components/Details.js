@@ -15,7 +15,7 @@ export const Details = ({
         getCardById(id)
             .then((doc) => {
                 if (doc.exists) {
-                    setCard(doc.data());
+                    setCard({ ...doc.data(), id: doc.id });
                 } else {
                     console.log('No such document!');
                 }
