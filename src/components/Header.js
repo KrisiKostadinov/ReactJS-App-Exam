@@ -1,6 +1,7 @@
 import React from 'react'
 import { NavLink, useHistory } from 'react-router-dom'
-import { logout, removeUserInfo } from '../config/firebase';
+import { logout } from '../config/firebase';
+import { clearUserData } from '../config/utils';
 
 export default function Header({ user, isAuth }) {
 
@@ -8,6 +9,7 @@ export default function Header({ user, isAuth }) {
     
     function handleLogout() {
         logout().then(() => {
+            clearUserData();
             history.push('/');
         }).catch((error) => {
             console.log(error);

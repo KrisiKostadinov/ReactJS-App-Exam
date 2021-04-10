@@ -27,7 +27,7 @@ function App() {
         <Switch>
           <Route exact path="/" component={CardsList} />
           <Route exact path="/all" component={CardsList} />
-          <Route exact path="/add" component={AddCard} />
+          <Route exact path="/add" component={AddCard} userId={user?.uid} />
           <Route exact path="/details/:id" component={Details} />
           <Route exact path="/login" component={Login} />
           <Route exact path="/register" component={Register} />

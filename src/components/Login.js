@@ -1,6 +1,7 @@
 import React, { useState } from 'react'
 import { Form, FormGroup } from 'reactstrap'
-import { login, saveUserInfo } from '../config/firebase';
+import { login } from '../config/firebase';
+import { setUserData } from '../config/utils';
 
 export const Login = ({
     history
@@ -19,6 +20,7 @@ export const Login = ({
 
         login(email, password)
             .then((userCredential) => {
+                setUserData(userCredential);
                 history.push('/');
             })
             .catch((error) => {

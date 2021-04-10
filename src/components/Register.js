@@ -1,6 +1,7 @@
 import React, { useState } from 'react'
 import { Form, FormGroup } from 'reactstrap'
 import { register } from '../config/firebase';
+import { setUserData } from '../config/utils';
 
 export const Register = ({
     history
@@ -24,6 +25,7 @@ export const Register = ({
 
         register(email, password)
             .then((userCredential) => {
+                setUserData(userCredential);
                 history.push('/');
             })
             .catch((error) => {

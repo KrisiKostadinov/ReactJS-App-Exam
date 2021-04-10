@@ -1,35 +1,36 @@
-import React, { Component } from 'react'
+import React, { useEffect, useState } from 'react'
 import { NavLink } from 'react-router-dom';
+import { getAllCards } from '../config/models/cards';
 
-export default class CardsList extends Component {
+export default function CardsList() {
 
-    constructor() {
-        super()
+    const [cards, setCards] = useState([]);
 
-        this.state = { cards: [] }
-    }
+    useEffect(async () => {
+        await getAllCards()
+            .then((snapshot) => {
+                const cards = [];
+                snapshot.docs.map(doc => cards.push({ ...doc.data(), id: doc.id }));
+                setCards(cards);
+            })
+            .catch((error) => {
+                console.log(error);
+            });
+    }, []);
 
-    componentDidMount() {
-        fetch('http://localhost:3030/cards')
-            .then(res => res.json())
-            .then(cards => this.setState({ cards }));
-    }
-
-    render() {
-        return (
-            <div className="container my-4">
-                <div className="row">
-                    {this.state.cards.map(card =>
-                        <div key={card.id} className="card col-md-3 w-25">
-                            <img className="card-img-top" src={card.url} alt="Card image cap" />
-                            <div className="card-body">
-                                <h5 className="card-title">{card.title}</h5>
-                                <p className="card-text">{card.content}</p>
-                                <NavLink to={`/details/${card.id}`} className="btn btn-primary">Details</NavLink>
-                            </div>
-                        </div>)}
-                </div>
+    return (
+        <div className="container my-4">
+            <div className="row">
+                {cards.map(card =>
+                    <div key={card.id} className="card col-md-3 w-25">
+                        <img className="card-img-top" src={card.url} alt="Card image cap" />
+                        <div className="card-body">
+                            <h5 className="card-title">{card.title}</h5>
+                            <p className="card-text">{card.content}</p>
+                            <NavLink to={`/details/${card.id}`} className="btn btn-primary">Details</NavLink>
+                        </div>
+                    </div>)}
             </div>
-        )
-    }
+        </div>
+    );
 }

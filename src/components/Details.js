@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react'
 import { NavLink, useParams } from 'react-router-dom'
 import { confirmAlert } from 'react-confirm-alert'
+import { deleteCardById, getCardById } from '../config/models/cards';
 
 export const Details = ({
     history
@@ -11,9 +12,17 @@ export const Details = ({
     const [card, setCard] = useState({});
 
     useEffect(() => {
-        fetch('http://localhost:3030/cards/' + id)
-            .then(res => res.json())
-            .then(card => setCard(card));
+        getCardById(id)
+            .then((doc) => {
+                if (doc.exists) {
+                    setCard(doc.data());
+                } else {
+                    console.log('No such document!');
+                }
+            })
+            .catch((error) => {
+                console.log(error);
+            });
     }, []);
 
     function handleDeleteCard() {
@@ -35,13 +44,13 @@ export const Details = ({
             }
         });
 
-        function handleClickDelete() {
-            fetch('http://localhost:3030/cards/' + id, {
-                method: 'delete'
-            })
-            .then(data => {
-                return history.push('/');
-            });
+        async function handleClickDelete() {
+            try {
+                await deleteCardById(id);
+                history.push('/');
+            } catch(error) {
+                console.log(error);
+            }
         }
     }
 
