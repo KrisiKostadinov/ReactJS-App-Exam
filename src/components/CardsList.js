@@ -1,27 +1,34 @@
 import React, { useEffect, useState } from 'react'
 import { NavLink } from 'react-router-dom';
-import { getAllCards } from '../config/models/cards';
+import { getAllByUserIdCards, getAllCards } from '../config/models/cards';
 
-export default function CardsList() {
+export default function CardsList({
+    userId = ''
+}) {
 
     const [cards, setCards] = useState([]);
 
     useEffect(async () => {
-        await getAllCards()
-            .then((snapshot) => {
-                const cards = [];
-                snapshot.docs.map(doc => cards.push({ ...doc.data(), id: doc.id }));
-                setCards(cards);
-            })
-            .catch((error) => {
-                console.log(error);
-            });
+        try {
+            let snapshot;
+            if (userId != '') {
+                snapshot = await getAllByUserIdCards(userId);
+            } else {
+                snapshot = await getAllCards();
+            }
+
+            const cards = [];
+            snapshot.docs.map(doc => cards.push({ ...doc.data(), id: doc.id }));
+            setCards(cards);
+        } catch (error) {
+            console.log(error);
+        }
     }, []);
 
     return (
         <div className="container my-4">
             <div className="row">
-                {cards.map(card =>
+                {cards.length > 0 ? cards.map(card =>
                     <div key={card.id} className="card col-md-3 w-25">
                         <img className="card-img-top" src={card.url} alt="Card image cap" />
                         <div className="card-body">
@@ -29,7 +36,10 @@ export default function CardsList() {
                             <p className="card-text">{card.content}</p>
                             <NavLink to={`/details/${card.id}`} className="btn btn-primary">Details</NavLink>
                         </div>
-                    </div>)}
+                    </div>) :
+                    <div>
+                        <h2>No Cards</h2>
+                    </div>}
             </div>
         </div>
     );

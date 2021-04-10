@@ -25,3 +25,7 @@ export async function getCardById(id) {
 export async function deleteCardById(id) {
     await cards.doc(id).delete();
 }
+
+export async function getAllByUserIdCards(userId) {
+    return cards.where('userId', '==', userId).get();
+}

@@ -19,7 +19,7 @@ export default function Header({ user, isAuth }) {
     return (
         <nav className="navbar navbar-expand-lg navbar-light bg-light">
             <div className="container">
-                <NavLink className="navbar-brand" to="/">Navbar</NavLink>
+                <NavLink className="navbar-brand" to="/">Cards App</NavLink>
                 <button className="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
                     <span className="navbar-toggler-icon"></span>
                 </button>

@@ -2,27 +2,39 @@ import React, { useEffect, useState } from 'react'
 import { NavLink, useParams } from 'react-router-dom'
 import { confirmAlert } from 'react-confirm-alert'
 import { deleteCardById, getCardById } from '../config/models/cards';
+import { getUserData } from '../config/utils';
 
 export const Details = ({
     history
 }) => {
 
     const { id } = useParams();
+    const [card, setCard] = useState({
+        title: '',
+        content: '',
+        url: ''
+    });
+    const [isMyCard, setIsMyCard] = useState(false);
 
-    const [card, setCard] = useState({});
+    function cancel() {
+        history.goBack();
+    }
 
-    useEffect(() => {
-        getCardById(id)
-            .then((doc) => {
-                if (doc.exists) {
-                    setCard({ ...doc.data(), id: doc.id });
-                } else {
-                    console.log('No such document!');
-                }
-            })
-            .catch((error) => {
-                console.log(error);
-            });
+    useEffect(async () => {
+        const userCreadential = getUserData();
+
+        try {
+            const doc = await getCardById(id);
+            
+            if (doc.exists) {
+                setCard({ ...doc.data(), id: doc.id });
+                setIsMyCard(doc.data().userId == userCreadential.user.uid);
+            } else {
+                console.log('No such document!');
+            }
+        } catch (error) {
+            console.log(error);
+        }
     }, []);
 
     function handleDeleteCard() {
@@ -48,7 +60,7 @@ export const Details = ({
             try {
                 await deleteCardById(id);
                 history.push('/');
-            } catch(error) {
+            } catch (error) {
                 console.log(error);
             }
         }
@@ -62,8 +74,13 @@ export const Details = ({
                     <div className="card-body col-md-8">
                         <h5 className="card-title">{card.title}</h5>
                         <p className="card-text">{card.content}</p>
-                        <NavLink className="btn btn-warning" to={`/edit/${card.id}`}>Edit</NavLink>
-                        <button className="mx-2 btn btn-danger" onClick={handleDeleteCard}>Delete</button>
+                        {isMyCard ?
+                            <div className="btn-group">
+                                <NavLink className="btn btn-warning" to={`/edit/${card.id}`}>Edit</NavLink>
+                                <button className="btn btn-danger" onClick={handleDeleteCard}>Delete</button>
+                            </div> :
+                            ''}
+                        <button className="mx-2 btn btn-light" onClick={cancel}>Cancel</button>
                     </div>
                 </div>
             </div>

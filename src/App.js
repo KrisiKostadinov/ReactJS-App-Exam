@@ -11,6 +11,7 @@ import CardsList from './components/CardsList';
 import { Details } from './components/Details';
 import { auth } from './config/firebase';
 import { EditCard } from './components/EditCard';
+import { Account } from './components/Account';
 
 function App() {
 
@@ -33,6 +34,7 @@ function App() {
           <Route exact path="/details/:id" component={Details} />
           <Route exact path="/login" component={Login} />
           <Route exact path="/register" component={Register} />
+          <Route exact path="/account" component={Account} />
         </Switch>
       </Router>
     </div>
