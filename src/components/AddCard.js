@@ -25,14 +25,16 @@ export default function AddCard({
         const userCredential = getUserData();
 
         try {
-            await addCard({
+            const card = await addCard({
                 title,
                 content,
                 url,
                 userId: userCredential.user.uid
             });
 
-            history.push('/');
+            console.log(card);
+
+            history.push('/details/' + card.id);
         } catch(error) {
             setIsSubmit(false);
             setError(error.message);

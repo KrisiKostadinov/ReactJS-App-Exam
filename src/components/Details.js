@@ -79,7 +79,7 @@ export const Details = ({
                                 <NavLink className="btn btn-warning" to={`/edit/${card.id}`}>Edit</NavLink>
                                 <button className="btn btn-danger" onClick={handleDeleteCard}>Delete</button>
                             </div> :
-                            ''}
+                            <h2>Loading...</h2>}
                         <button className="mx-2 btn btn-light" onClick={cancel}>Cancel</button>
                     </div>
                 </div>

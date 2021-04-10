@@ -9,18 +9,20 @@ export const EditCard = () => {
 
     const history = useHistory();
     const { id } = useParams();
-    const [isSubmit, setIsSubmit] = useState(false);
+    const [isSubmit, setIsSubmit] = useState(true);
     const [error, setError] = useState('');
     const [card, setCard] = useState({
         title: '',
         content: '',
         url: ''
     });
+    const [isLoading, setIsLoading] = useState(true);
 
     useEffect(async () => {
         try {
             const doc = await getCardById(id);
-
+            setIsLoading(false);
+            setIsSubmit(false);
             if (doc.exists) {
                 setCard({ ...doc.data(), id: doc.id });
             } else {
@@ -70,6 +72,7 @@ export const EditCard = () => {
     return (
         <div className="w-50 mx-auto">
             <h2>Edit Card</h2>
+            {isLoading ? <h2>Loading...</h2> : ''}
             <Form onSubmit={handleSubmit} className="form">
                 {error ? <div className="alert alert-danger">{error}</div> : ''}
                 <FormGroup className="form-group">

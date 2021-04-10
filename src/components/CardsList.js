@@ -7,6 +7,7 @@ export default function CardsList({
 }) {
 
     const [cards, setCards] = useState([]);
+    const [isLoading, setIsLoading] = useState(true);
 
     useEffect(async () => {
         try {
@@ -16,7 +17,7 @@ export default function CardsList({
             } else {
                 snapshot = await getAllCards();
             }
-
+            setIsLoading(false);
             const cards = [];
             snapshot.docs.map(doc => cards.push({ ...doc.data(), id: doc.id }));
             setCards(cards);
@@ -38,7 +39,9 @@ export default function CardsList({
                         </div>
                     </div>) :
                     <div>
-                        <h2>No Cards</h2>
+                        {isLoading ?
+                            <h2>Loading...</h2> :
+                            <h2>No Cards</h2>}
                     </div>}
             </div>
         </div>
