@@ -13,10 +13,11 @@ export default function AddCard({
         event.preventDefault();
 
         const title = event.target.title.value;
+        const subtitle = event.target.subtitle.value;
         const content = event.target.content.value;
         const url = event.target.url.value;
 
-        if(title == '' || content == '' || url == '') {
+        if (title === '' || subtitle === '' || content === '' || url === '') {
             return setError('All fields is required!');
         }
 
@@ -27,15 +28,14 @@ export default function AddCard({
         try {
             const card = await addCard({
                 title,
+                subtitle,
                 content,
                 url,
                 userId: userCredential.user.uid
             });
 
-            console.log(card);
-
             history.push('/details/' + card.id);
-        } catch(error) {
+        } catch (error) {
             setIsSubmit(false);
             setError(error.message);
             console.log(error);
@@ -44,11 +44,17 @@ export default function AddCard({
 
     return (<>
         <div className="w-50 mx-auto">
-        <h2>Add Card</h2>
+            <title>Create a new card!</title>
+            <h2>Add Card</h2>
             <Form onSubmit={handleSubmit} className="form">
+                {error ? <div className="alert alert-danger">{error}</div> : ''}
                 <FormGroup className="form-group">
                     <label>Title</label>
-                    <input disabled={isSubmit} className="form-control" type="text" name="title" />
+                    <input autoFocus disabled={isSubmit} className="form-control" type="text" name="title" />
+                </FormGroup>
+                <FormGroup className="form-group">
+                    <label>Subtitle</label>
+                    <input disabled={isSubmit} className="form-control" type="text" name="subtitle" />
                 </FormGroup>
                 <FormGroup className="form-group">
                     <label>Content</label>

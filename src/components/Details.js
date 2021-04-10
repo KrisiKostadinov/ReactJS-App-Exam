@@ -21,24 +21,29 @@ export const Details = ({
         history.goBack();
     }
 
-    useEffect(async () => {
+    useEffect(() => {
         const userCreadential = getUserData();
 
-        try {
-            const doc = await getCardById(id);
+        async function getData() {
+            try {
+                const doc = await getCardById(id);
+                return doc;
+            } catch (error) {
+                console.log(error);
+            }
+        }
 
-            setIsLoading(false);
-            
+        setIsLoading(false);
+        getData().then((doc) => { 
             if (doc.exists) {
                 setCard({ ...doc.data(), id: doc.id });
-                setIsMyCard(doc.data().userId == userCreadential.user.uid);
+                setIsMyCard(doc.data().userId === userCreadential.user.uid);
             } else {
                 console.log('No such document!');
             }
-        } catch (error) {
-            console.log(error);
-        }
-    }, []);
+        });
+
+    }, [id]);
 
     function handleDeleteCard() {
         confirmAlert({
@@ -71,11 +76,13 @@ export const Details = ({
 
     return (
         <div className="container">
+            <title>{card.title}</title>
             <div className="card w-100">
                 <div className="row">
                     <img className="card-img-top col-md-4" src={card.url} alt="Card image cap" />
                     <div className="card-body col-md-8">
                         <h5 className="card-title">{card.title}</h5>
+                        <h6 className="card-subtitle text-muted my-2">{card.subtitle}</h6>
                         <p className="card-text">{card.content}</p>
                         {isMyCard ?
                             <div className="btn-group">

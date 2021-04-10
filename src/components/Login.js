@@ -31,12 +31,13 @@ export const Login = ({
 
     return (
         <div className="w-50 mx-auto">
+            <title>Login</title>
             <h2>Login</h2>
             <Form onSubmit={handleLogin} className="form">
                 {error ? <div className="alert alert-danger">{error}</div> : ''}
                 <FormGroup className="form-group">
                     <label>Email</label>
-                    <input disabled={isSubmit} className="form-control" type="email" name="email" />
+                    <input autoFocus disabled={isSubmit} className="form-control" type="email" name="email" />
                 </FormGroup>
                 <FormGroup className="form-group">
                     <label>Password</label>

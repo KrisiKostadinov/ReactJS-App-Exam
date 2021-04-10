@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react'
 import { useHistory, useParams } from 'react-router';
 import { Button, Form, FormGroup } from 'reactstrap'
 
-import { addCard, editCard, getCardById } from '../config/models/cards';
+import { editCard, getCardById } from '../config/models/cards';
 import { getUserData } from '../config/utils';
 
 export const EditCard = () => {
@@ -13,25 +13,32 @@ export const EditCard = () => {
     const [error, setError] = useState('');
     const [card, setCard] = useState({
         title: '',
+        subtitle: '',
         content: '',
         url: ''
     });
     const [isLoading, setIsLoading] = useState(true);
 
-    useEffect(async () => {
-        try {
-            const doc = await getCardById(id);
-            setIsLoading(false);
-            setIsSubmit(false);
+    useEffect(() => {
+        setIsLoading(false);
+        setIsSubmit(false);
+
+        async function getData() {
+            try {
+                return await getCardById(id);
+            } catch (error) {
+                console.log(error);
+            }
+        }
+
+        getData().then((doc) => {
             if (doc.exists) {
                 setCard({ ...doc.data(), id: doc.id });
             } else {
                 console.log('No such document!');
             }
-        } catch (error) {
-            console.log(error);
-        }
-    }, []);
+        });
+    }, [id]);
 
     function cancel() {
         history.goBack();
@@ -43,8 +50,9 @@ export const EditCard = () => {
         const title = event.target.title.value;
         const content = event.target.content.value;
         const url = event.target.url.value;
+        const subtitle = event.target.subtitle.value;
 
-        if (title == '' || content == '' || url == '') {
+        if (title === '' || content === '' || url === '') {
             return setError('All fields is required!');
         }
 
@@ -55,12 +63,13 @@ export const EditCard = () => {
         try {
             await editCard(id, {
                 title,
+                subtitle,
                 content,
                 url,
                 userId: userCredential.user.uid
             });
 
-            history.push('/');
+            history.push('/details/' + id);
         } catch (error) {
             setIsSubmit(false);
             setError(error.message);
@@ -71,13 +80,18 @@ export const EditCard = () => {
 
     return (
         <div className="w-50 mx-auto">
+            <title>Edit Card - {card.title}</title>
             <h2>Edit Card</h2>
             {isLoading ? <h2>Loading...</h2> : ''}
             <Form onSubmit={handleSubmit} className="form">
                 {error ? <div className="alert alert-danger">{error}</div> : ''}
                 <FormGroup className="form-group">
                     <label>Title</label>
-                    <input disabled={isSubmit} className="form-control" defaultValue={card.title} type="text" name="title" />
+                    <input autoFocus disabled={isSubmit} className="form-control" defaultValue={card.title} type="text" name="title" />
+                </FormGroup>
+                <FormGroup className="form-group">
+                    <label>Subtitle</label>
+                    <input disabled={isSubmit} className="form-control" type="text" defaultValue={card.subtitle} name="subtitle" />
                 </FormGroup>
                 <FormGroup className="form-group">
                     <label>Content</label>

@@ -17,7 +17,7 @@ export const Register = ({
         const password = event.target.password.value;
         const confirmPassword = event.target.confirmPassword.value;
 
-        if(password != confirmPassword) {
+        if(password !== confirmPassword) {
             return setError('Password don\'t match!');
         }
 
@@ -37,12 +37,13 @@ export const Register = ({
 
     return (
         <div className="w-50 mx-auto">
+            <title>Register</title>
             <h2>Register</h2>
             <Form onSubmit={handleRegister} className="form">
             {error ? <div className="alert alert-danger">{error}</div> : ''}
                 <FormGroup className="form-group">
                     <label>Email</label>
-                    <input disabled={isSubmit} className="form-control" type="email" name="email" />
+                    <input autoFocus disabled={isSubmit} className="form-control" type="email" name="email" />
                 </FormGroup>
                 <FormGroup className="form-group">
                     <label>Password</label>

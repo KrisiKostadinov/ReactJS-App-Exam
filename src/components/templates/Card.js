@@ -7,7 +7,9 @@ export const Card = ({ card }) => {
             <img className="card-img-top w-100" src={card.url} alt="Card image cap" />
             <div className="card-body">
                 <h5 className="card-title">{card.title}</h5>
-                <p className="card-text">{card.content.slice(0, 100)}</p>
+                <p className="card-text">{card.content.length > 100 ?
+                    card.content.slice(0, 100) + '...' :
+                    card.content}</p>
                 <NavLink to={`/details/${card.id}`} className="btn btn-primary">Details</NavLink>
             </div>
         </div>)

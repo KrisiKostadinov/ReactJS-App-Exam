@@ -6,7 +6,7 @@ import { clearUserData } from '../config/utils';
 export default function Header({ user, isAuth }) {
 
     const history = useHistory();
-    
+
     function handleLogout() {
         logout().then(() => {
             clearUserData();
@@ -25,12 +25,11 @@ export default function Header({ user, isAuth }) {
                 </button>
                 <div className="collapse navbar-collapse" id="navbarNav">
                     <ul className="navbar-nav">
-                        <li className="nav-item">
-                            <NavLink className="nav-link" to="/">Home</NavLink>
-                        </li>
-                        <li className="nav-item">
-                            <NavLink className="nav-link" to="/add">Add Card</NavLink>
-                        </li>
+                        {isAuth ?
+                            <li className="nav-item">
+                                <NavLink className="nav-link" to="/add">Add Card</NavLink>
+                            </li> :
+                            ''}
                     </ul>
                 </div>
                 <div className="collapse navbar-collapse">
