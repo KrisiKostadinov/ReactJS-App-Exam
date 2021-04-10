@@ -15,6 +15,7 @@ export const Details = ({
         url: ''
     });
     const [isMyCard, setIsMyCard] = useState(false);
+    const [isLoading, setIsLoading] = useState(true);
 
     function cancel() {
         history.goBack();
@@ -25,6 +26,8 @@ export const Details = ({
 
         try {
             const doc = await getCardById(id);
+
+            setIsLoading(false);
             
             if (doc.exists) {
                 setCard({ ...doc.data(), id: doc.id });
@@ -79,7 +82,9 @@ export const Details = ({
                                 <NavLink className="btn btn-warning" to={`/edit/${card.id}`}>Edit</NavLink>
                                 <button className="btn btn-danger" onClick={handleDeleteCard}>Delete</button>
                             </div> :
-                            <h2>Loading...</h2>}
+                            isLoading ?
+                                <h2>Loading...</h2> :
+                                ''}
                         <button className="mx-2 btn btn-light" onClick={cancel}>Cancel</button>
                     </div>
                 </div>

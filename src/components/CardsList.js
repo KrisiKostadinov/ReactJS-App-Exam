@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react'
-import { NavLink } from 'react-router-dom';
 import { getAllByUserIdCards, getAllCards } from '../config/models/cards';
+import { Card } from './templates/Card';
 
 export default function CardsList({
     userId = ''
@@ -30,14 +30,8 @@ export default function CardsList({
         <div className="container my-4">
             <div className="row">
                 {cards.length > 0 ? cards.map(card =>
-                    <div key={card.id} className="card col-md-3 w-25">
-                        <img className="card-img-top" src={card.url} alt="Card image cap" />
-                        <div className="card-body">
-                            <h5 className="card-title">{card.title}</h5>
-                            <p className="card-text">{card.content}</p>
-                            <NavLink to={`/details/${card.id}`} className="btn btn-primary">Details</NavLink>
-                        </div>
-                    </div>) :
+                    <Card card={card} />
+                ) :
                     <div>
                         {isLoading ?
                             <h2>Loading...</h2> :

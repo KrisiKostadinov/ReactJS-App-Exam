@@ -4,7 +4,7 @@ import CardsList from './CardsList';
 
 export const Account = () => {
     const userCredential = getUserData();
-    const [userId, setUserId] = useState(userCredential.user.uid);
+    const [userId] = useState(userCredential.user.uid);
 
     return (
         <div className="container">
