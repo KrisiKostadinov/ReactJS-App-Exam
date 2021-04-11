@@ -41,7 +41,7 @@ export const Details = ({
 
                 if (doc.exists) {
                     setCard({ ...doc.data(), id: doc.id });
-                    setIsMyCard(doc.data().userId === userCreadential.user.uid);
+                    setIsMyCard(doc.data().userId === userCreadential?.user.uid);
                 } else {
                     console.log('No such document!');
                 }

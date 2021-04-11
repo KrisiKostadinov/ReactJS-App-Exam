@@ -3,6 +3,9 @@ import React, { useEffect, useState } from 'react';
 import { Route, Switch } from 'react-router';
 import { BrowserRouter as Router } from 'react-router-dom';
 
+import { PrivateGourd } from './guards/PrivateGourd';
+import { PublicGourd } from './guards/PublicGourd';
+
 import Header from './components/Header';
 import { Login } from './components/Login';
 import { Register } from './components/Register';
@@ -29,12 +32,12 @@ function App() {
         <Switch>
           <Route exact path="/" component={CardsList} />
           <Route exact path="/all" component={CardsList} />
-          <Route exact path="/add" component={AddCard} />
+          <PrivateGourd authed={Boolean(user)} path='/add' component={AddCard} />
           <Route exact path="/edit/:id" component={EditCard} />
           <Route exact path="/details/:id" component={Details} />
-          <Route exact path="/login" component={Login} />
-          <Route exact path="/register" component={Register} />
-          <Route exact path="/account" component={Account} />
+          <PublicGourd authed={Boolean(user)} path="/login" component={Login} />
+          <PublicGourd authed={Boolean(user)} path="/register" component={Register} />
+          <PrivateGourd authed={Boolean(user)} path='/account' component={Account} />
         </Switch>
       </Router>
     </div>

@@ -32,7 +32,8 @@ export default function AddCard({
         const content = event.target.content.value;
         let url = event.target.url?.value;
 
-        if (title === '' || subtitle === '' || content === '') {
+        if (title === '' || content === '') {
+            setIsSubmit(false);
             return setError('All fields is required!');
         }
 
@@ -60,7 +61,11 @@ export default function AddCard({
             title: data.title,
             subtitle: data.subtitle,
             content: data.content,
-            url: data.url ? data.url : fireBaseUrl,
+            url: data.url ?
+                data.url :
+                fireBaseUrl ?
+                    fireBaseUrl :
+                    'https://thumbs.dreamstime.com/b/default-avatar-profile-trendy-style-social-media-user-icon-187599373.jpg',
             imagePath,
             userId: userCredential.user.uid,
         });
