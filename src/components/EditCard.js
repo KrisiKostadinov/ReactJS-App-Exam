@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import { useHistory, useParams } from 'react-router';
-import { Button, Form, FormGroup } from 'reactstrap'
+import { Button, Form, FormGroup, Spinner } from 'reactstrap'
 
 import { editCard, getCardById } from '../config/models/cards';
 import { getUserData } from '../config/utils';
@@ -20,7 +20,6 @@ export const EditCard = () => {
     const [isLoading, setIsLoading] = useState(true);
 
     useEffect(() => {
-        setIsLoading(false);
         setIsSubmit(false);
 
         async function getData() {
@@ -32,6 +31,8 @@ export const EditCard = () => {
         }
 
         getData().then((doc) => {
+            setIsLoading(false);
+
             if (doc.exists) {
                 setCard({ ...doc.data(), id: doc.id });
             } else {
@@ -81,10 +82,11 @@ export const EditCard = () => {
     return (
         <div className="w-50 mx-auto">
             <title>Edit Card - {card.title}</title>
+            {isLoading ? <Spinner /> : ''}
             <h2>Edit Card</h2>
-            {isLoading ? <h2>Loading...</h2> : ''}
             <Form onSubmit={handleSubmit} className="form">
                 {error ? <div className="alert alert-danger">{error}</div> : ''}
+                {isSubmit ? <Spinner /> : ''}
                 <FormGroup className="form-group">
                     <label>Title</label>
                     <input autoFocus disabled={isSubmit} className="form-control" defaultValue={card.title} type="text" name="title" />
@@ -95,7 +97,7 @@ export const EditCard = () => {
                 </FormGroup>
                 <FormGroup className="form-group">
                     <label>Content</label>
-                    <input disabled={isSubmit} className="form-control" defaultValue={card.content} type="text" name="content" />
+                    <textarea disabled={isSubmit} className="form-control" defaultValue={card.content} type="text" name="content"></textarea>
                 </FormGroup>
                 <FormGroup className="form-group">
                     <label>Image URL</label>

@@ -1,5 +1,5 @@
 import React, { useState } from 'react'
-import { Form, FormGroup } from 'reactstrap'
+import { Form, FormGroup, Spinner } from 'reactstrap'
 import { register } from '../config/firebase';
 import { setUserData } from '../config/utils';
 
@@ -17,7 +17,7 @@ export const Register = ({
         const password = event.target.password.value;
         const confirmPassword = event.target.confirmPassword.value;
 
-        if(password !== confirmPassword) {
+        if (password !== confirmPassword) {
             return setError('Password don\'t match!');
         }
 
@@ -40,7 +40,8 @@ export const Register = ({
             <title>Register</title>
             <h2>Register</h2>
             <Form onSubmit={handleRegister} className="form">
-            {error ? <div className="alert alert-danger">{error}</div> : ''}
+                {isSubmit ? <Spinner /> : ''}
+                {error ? <div className="alert alert-danger">{error}</div> : ''}
                 <FormGroup className="form-group">
                     <label>Email</label>
                     <input autoFocus disabled={isSubmit} className="form-control" type="email" name="email" />

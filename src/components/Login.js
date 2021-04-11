@@ -1,5 +1,5 @@
 import React, { useState } from 'react'
-import { Form, FormGroup } from 'reactstrap'
+import { Form, FormGroup, Spinner } from 'reactstrap'
 import { login } from '../config/firebase';
 import { setUserData } from '../config/utils';
 
@@ -10,7 +10,7 @@ export const Login = ({
     const [isSubmit, setIsSubmit] = useState(false);
     const [error, setError] = useState('');
 
-    function handleLogin (event) {
+    function handleLogin(event) {
         event.preventDefault();
 
         const email = event.target.email.value;
@@ -34,6 +34,7 @@ export const Login = ({
             <title>Login</title>
             <h2>Login</h2>
             <Form onSubmit={handleLogin} className="form">
+                {isSubmit ? <Spinner /> : ''}
                 {error ? <div className="alert alert-danger">{error}</div> : ''}
                 <FormGroup className="form-group">
                     <label>Email</label>

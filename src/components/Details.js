@@ -1,8 +1,9 @@
 import React, { useEffect, useState } from 'react'
 import { NavLink, useParams } from 'react-router-dom'
 import { confirmAlert } from 'react-confirm-alert'
-import { deleteCardById, getCardById } from '../config/models/cards';
+import { deleteCardById, getCardById, deleteImageCardByUrl } from '../config/models/cards';
 import { getUserData } from '../config/utils';
+import { Spinner } from 'reactstrap';
 
 export const Details = ({
     history
@@ -12,7 +13,8 @@ export const Details = ({
     const [card, setCard] = useState({
         title: '',
         content: '',
-        url: ''
+        url: '',
+        imagePath: ''
     });
     const [isMyCard, setIsMyCard] = useState(false);
     const [isLoading, setIsLoading] = useState(true);
@@ -33,15 +35,17 @@ export const Details = ({
             }
         }
 
-        setIsLoading(false);
-        getData().then((doc) => { 
-            if (doc.exists) {
-                setCard({ ...doc.data(), id: doc.id });
-                setIsMyCard(doc.data().userId === userCreadential.user.uid);
-            } else {
-                console.log('No such document!');
-            }
-        });
+        getData()
+            .then((doc) => {
+                setIsLoading(false);
+
+                if (doc.exists) {
+                    setCard({ ...doc.data(), id: doc.id });
+                    setIsMyCard(doc.data().userId === userCreadential.user.uid);
+                } else {
+                    console.log('No such document!');
+                }
+            });
 
     }, [id]);
 
@@ -66,18 +70,22 @@ export const Details = ({
 
         async function handleClickDelete() {
             try {
-                await deleteCardById(id);
-                history.push('/');
+                setIsLoading(true);
+                await deleteCardById(id, card.url);
+                await deleteImageCardByUrl(card.imagePath);
             } catch (error) {
-                console.log(error);
+                console.log(error.message);
             }
+
+            history.push('/');
         }
     }
 
     return (
         <div className="container">
+            {isLoading ? <Spinner /> : ''}
             <title>{card.title}</title>
-            <div className="card w-100">
+            <div className="card w-100 mt-4">
                 <div className="row">
                     <img className="card-img-top col-md-4" src={card.url} alt="Card image cap" />
                     <div className="card-body col-md-8">
@@ -89,9 +97,7 @@ export const Details = ({
                                 <NavLink className="btn btn-warning" to={`/edit/${card.id}`}>Edit</NavLink>
                                 <button className="btn btn-danger" onClick={handleDeleteCard}>Delete</button>
                             </div> :
-                            isLoading ?
-                                <h2>Loading...</h2> :
-                                ''}
+                            ''}
                         <button className="mx-2 btn btn-light" onClick={cancel}>Cancel</button>
                     </div>
                 </div>
