@@ -26,7 +26,7 @@ function App() {
 
   return (
     <div className="App">
-      <Router>
+      <Router basename="/ReactJS-App-Exam">
       <Header isAuth={user ? true : false} user={user} />
       
         <Switch>
